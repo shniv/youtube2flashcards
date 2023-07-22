@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Flashcards</title>
+    <style>
+        /* Existing CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .flashcard-container {
+            width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .flashcard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .flashcard-table th,
+        .flashcard-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .flashcard-table th {
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .flashcard {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .flashcard .term {
+            font-weight: bold;
+        }
+
+        .flashcard .definition {
+            margin-top: 10px;
+        }
+
+        .csv-button {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .export-button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Flashcards</h1>
+    <div class="flashcard-container">
+        <form action="/" method="POST">
+            <label for="video_url">Enter YouTube Video URL:</label>
+            <br>
+            <input type="text" id="video_url" name="video_url" required>
+            <br>
+            <button type="submit">Generate Flashcards</button>
+        </form>
+        {% if flashcards_table %}
+            <table class="flashcard-table">
+                <thead>
+                    <tr>
+                        <th>Flashcard Front</th>
+                        <th>Flashcard Back</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flashcard in flashcards_table %}
+                        <tr>
+                            <td>{{ flashcard[0] }}</td>
+                            <td>{{ flashcard[1] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="csv-button">
+                <a href="#" class="export-button" onclick="exportToCSV()">Export to CSV</a>
+            </div>
+        {% else %}
+            <p>No flashcards generated.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function exportToCSV() {
+            let flashcards = [];
+    
+            // Get all flashcards
+            let flashcardElements = document.querySelectorAll('.flashcard');
+            flashcardElements.forEach(function(flashcardElement) {
+                let term = flashcard[0];
+                let definition = flashcard[1];
+                flashcards.push([term, definition]);
+            });
+    
+            // Create CSV content
+            let csvContent = 'data:text/csv;charset=utf-8,';
+            flashcards.forEach(function(flashcard) {
+                let row = flashcard.join(',');
+                csvContent += row + '\n';
+            });
+    
+            // Create a temporary link and trigger the download
+            let encodedURI = encodeURI(csvContent);
+            let link = document.createElement('a');
+            link.setAttribute('href', encodedURI);
+            link.setAttribute('download', 'flashcards.csv');
+            document.body.appendChild(link);
+            link.click();
+        }
+    </script>
+    
+</body>
+</html>
