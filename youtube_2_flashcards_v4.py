@@ -9,10 +9,10 @@ from flask import Flask, request, render_template
 app = Flask(__name__)
 
 # Set up OpenAI API credentials
-openai.api_key = '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'
+openai.api_key = 'Your API Key Here'
 
 # YouTube Data API Key
-youtube_api_key = 'AIzaSyArucvurCQNYNfGjy2wguha5cb3-MIrvLY'
+youtube_api_key = 'Your API Key here'
 
 # Home route
 @app.route('/', methods=['GET', 'POST'])
